@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div class="container">
+<body class="container">
 
     <h2>Dashboard Admin</h2>
 
@@ -19,6 +19,10 @@
             Data Pekerja
         </a>
 
+        <a href="/admin/riwayat">
+            Riwayat Absensi
+        </a>
+
         <a href="/logout">
             Logout
         </a>
@@ -26,7 +30,8 @@
     </div>
 
     <h3>Absensi Hari Ini</h3>
-
+    </body>
+    <div class="table-wrapper">
     <table>
 
         <thead>
@@ -37,6 +42,8 @@
                 <th>Tanggal</th>
                 <th>Jam Masuk</th>
                 <th>Jam Keluar</th>
+                <th>Lokasi Masuk</th>
+                <th>Lokasi Keluar</th>
                 <th>Keterangan Masuk</th>
                 <th>Keterangan Keluar</th>
             </tr>
@@ -61,6 +68,9 @@
 
                 <td>{{this.jam_keluar}}</td>
 
+                <td>{{this.lokasi_masuk}}</td>
+                <td>{{this.lokasi_keluar}}</td>
+
                 <td>{{this.keterangan_masuk}}</td>
 
                 <td>{{this.keterangan_keluar}}</td>
@@ -72,7 +82,7 @@
         {{else}}
 
             <tr>
-                <td colspan="7">
+                <td colspan="9">
                     Belum ada absensi hari ini
                 </td>
             </tr>

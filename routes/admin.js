@@ -3,6 +3,8 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const moment = require("moment");
+const { getAddress } = require("../routes/geocode");
 
 /*
 |--------------------------------------------------------------------------
@@ -40,11 +42,44 @@ router.get(
         WHERE tanggal = CURDATE()
         `;
 
-        db.query(sqlAbsensi, (err, absensi) => {
+        db.query(sqlAbsensi, async (err, absensi) => {
 
-            if (err) {
-                console.log(err);
-                return res.send('Database Error');
+           if (err) {
+            console.log(err);
+            return res.send("Database Error");
+            }
+
+            for (let item of absensi) {
+
+                item.tanggal =
+                    moment(item.tanggal)
+                    .format("DD-MM-YYYY");
+
+                if(item.latitude_masuk && item.longitude_masuk){
+
+                    item.lokasi_masuk =
+                        await getAddress(
+                            item.latitude_masuk,
+                            item.longitude_masuk
+                        );
+
+                }else{
+
+                    item.lokasi_masuk = "-";
+                }
+
+                if(item.latitude_keluar && item.longitude_keluar){
+
+                    item.lokasi_keluar =
+                        await getAddress(
+                            item.latitude_keluar,
+                            item.longitude_keluar
+                        );
+
+                }else{
+
+                    item.lokasi_keluar = "-";
+                }
             }
 
             db.query(sqlTotalPekerja, (err, totalResult) => {
@@ -86,6 +121,7 @@ router.get(
                             belumHadir,
                             persentase
                         }
+                        
                     );
 
                 });
@@ -214,6 +250,112 @@ router.post(
             res.send('Terjadi Kesalahan');
 
         }
+
+    }
+);
+/*
+|--------------------------------------------------------------------------
+| RIWAYAT ABSENSI SEMUA PEKERJA
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+    '/admin/riwayat',
+    auth,
+    admin,
+    async (req,res)=>{
+
+        let sql = `
+        SELECT
+            a.*,
+            u.nama,
+            u.nik,
+            u.jabatan
+        FROM absensi a
+        JOIN users u
+            ON a.user_id = u.id
+        WHERE 1=1
+        `;
+
+        let params = [];
+
+        if(req.query.bulan){
+
+            sql += `
+            AND DATE_FORMAT(a.tanggal,'%Y-%m') = ?
+            `;
+
+            params.push(req.query.bulan);
+        }
+
+        sql += `
+        ORDER BY a.tanggal DESC
+        `;
+
+        db.query(
+            sql,
+            params,
+            async (err,rows)=>{
+
+                if(err){
+                    console.log(err);
+                    return res.send("Database Error");
+                }
+
+                for(let item of rows){
+
+                    // format tanggal
+                    const d = new Date(item.tanggal);
+
+                    item.tanggal =
+                        d.toLocaleDateString('id-ID');
+
+                    // lokasi masuk
+                    if(
+                        item.latitude_masuk &&
+                        item.longitude_masuk
+                    ){
+
+                        item.lokasi_masuk =
+                        await getAddress(
+                            item.latitude_masuk,
+                            item.longitude_masuk
+                        );
+
+                    }else{
+
+                        item.lokasi_masuk = "-";
+                    }
+
+                    // lokasi keluar
+                    if(
+                        item.latitude_keluar &&
+                        item.longitude_keluar
+                    ){
+
+                        item.lokasi_keluar =
+                        await getAddress(
+                            item.latitude_keluar,
+                            item.longitude_keluar
+                        );
+
+                    }else{
+
+                        item.lokasi_keluar = "-";
+                    }
+                }
+
+                res.render(
+                    'admin/riwayat',
+                    {
+                        user:req.session.user,
+                        data:rows,
+                        bulan:req.query.bulan
+                    }
+                );
+
+            }
+        );
 
     }
 );

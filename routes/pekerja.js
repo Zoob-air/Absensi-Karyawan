@@ -2,6 +2,7 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const db = require("../config/db");
 const moment = require("moment");
+const { getAddress } = require("../routes/geocode.js");
 /*
 |--------------------------------------------------------------------------
 | DASHBOARD PEKERJA
@@ -304,36 +305,45 @@ router.get(
         ORDER BY tanggal DESC
         `;
 
-        db.query(
-            sql,
-            params,
-            (err,result)=>{
+        db.query(sql, params, async (err, result) => {
 
-                if(err){
-                    console.log(err);
-                    return res.send(
-                        "Database Error"
-                    );
-                }
-                result.forEach(item => 
-                {
-                item.tanggal =
-                moment(item.tanggal)
-                .format("DD-MM-YYYY");
-                });
-                res.render(
-                    "pekerja/riwayat",
-                    {
-                        user:req.session.user,
-                        data:result,
-                        bulan:req.query.bulan
-                    }
+        if (err) {
+            console.log(err);
+            return res.send("Database Error");
+        }
+
+        // format tanggal + ubah koordinat jadi alamat
+        for (let item of result) {
+
+            item.tanggal = moment(item.tanggal).format("DD-MM-YYYY");
+
+            // lokasi masuk
+            if (item.latitude_masuk && item.longitude_masuk) {
+                item.lokasi_masuk = await getAddress(
+                    item.latitude_masuk,
+                    item.longitude_masuk
                 );
-
+            } else {
+                item.lokasi_masuk = "-";
             }
-        );
 
-    }
-);
+            // lokasi keluar
+            if (item.latitude_keluar && item.longitude_keluar) {
+                item.lokasi_keluar = await getAddress(
+                    item.latitude_keluar,
+                    item.longitude_keluar
+                );
+            } else {
+                item.lokasi_keluar = "-";
+            }
+        }
+
+        res.render("pekerja/riwayat", {
+            user: req.session.user,
+            data: result,
+            bulan: req.query.bulan
+        });
+    });
+});
 
 module.exports = router;

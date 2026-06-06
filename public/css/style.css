@@ -610,3 +610,6 @@ table tr:hover{
 .card{
     overflow-x:auto;
 }
+.table-wrapper{
+    overflow-x:auto;
+}
