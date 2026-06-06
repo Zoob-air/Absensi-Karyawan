@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Pekerja</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="absen-container">
+
+    <div class="absen-card">
+
+        <div class="absen-header">
+            <h2>ABSENSI PEKERJA</h2>
+            <p>{{user.nama}}</p>
+        </div>
+
+        <div class="datetime-box">
+
+            <div class="date" id="tanggal"></div>
+
+            <div class="time" id="jam"></div>
+
+        </div>
+
+        <form method="POST" action="/pekerja/clockin">
+
+            <div class="form-group">
+
+                <label>Latitude</label>
+
+                <input
+                    type="text"
+                    id="latitude"
+                    name="latitude"
+                    readonly>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Longitude</label>
+
+                <input
+                    type="text"
+                    id="longitude"
+                    name="longitude"
+                    readonly>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Keterangan Pekerjaan</label>
+
+                <textarea
+                    name="keterangan"
+                    rows="4"
+                    placeholder="Contoh : Pemeriksaan Barang Gardu Induk PLN Depok"
+                    required></textarea>
+
+            </div>
+
+            <button class="btn-clockin">
+                CLOCK IN
+            </button>
+
+        </form>
+
+        <hr>
+
+        <form method="POST" action="/pekerja/clockout">
+
+            <input type="hidden" id="latitude_out" name="latitude">
+
+            <input type="hidden" id="longitude_out" name="longitude">
+
+            <textarea
+                name="keterangan"
+                rows="3"
+                placeholder="Keterangan Clock Out"></textarea>
+
+            <button class="btn-clockout">
+                CLOCK OUT
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+navigator.geolocation.getCurrentPosition(
+
+    function(position){
+
+        document.getElementById('latitude').value =
+        position.coords.latitude;
+
+        document.getElementById('longitude').value =
+        position.coords.longitude;
+
+        document.getElementById('latitude_out').value =
+        position.coords.latitude;
+
+        document.getElementById('longitude_out').value =
+        position.coords.longitude;
+
+    },
+
+    function(error){
+
+        alert('GPS tidak diizinkan');
+
+    }
+
+);
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("jam").innerHTML =
+    now.toLocaleTimeString('id-ID');
+
+    document.getElementById("tanggal").innerHTML =
+    now.toLocaleDateString('id-ID',{
+        weekday:'long',
+        day:'numeric',
+        month:'long',
+        year:'numeric'
+    });
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+</script>
+
+</body>
+</html>

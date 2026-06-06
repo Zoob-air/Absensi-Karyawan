@@ -1,0 +1,221 @@
+const router = require('express').Router();
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
+const db = require('../config/db');
+const bcrypt = require('bcrypt');
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD ADMIN
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+    '/admin/dashboard',
+    auth,
+    admin,
+    (req, res) => {
+
+        const sqlAbsensi = `
+        SELECT
+            a.*,
+            u.nama,
+            u.jabatan
+        FROM absensi a
+        JOIN users u
+            ON a.user_id = u.id
+        WHERE a.tanggal = CURDATE()
+        ORDER BY a.jam_masuk DESC
+        `;
+
+        const sqlTotalPekerja = `
+        SELECT COUNT(*) AS total
+        FROM users
+        WHERE role='pekerja'
+        `;
+
+        const sqlHadir = `
+        SELECT COUNT(DISTINCT user_id) AS hadir
+        FROM absensi
+        WHERE tanggal = CURDATE()
+        `;
+
+        db.query(sqlAbsensi, (err, absensi) => {
+
+            if (err) {
+                console.log(err);
+                return res.send('Database Error');
+            }
+
+            db.query(sqlTotalPekerja, (err, totalResult) => {
+
+                if (err) {
+                    console.log(err);
+                    return res.send('Database Error');
+                }
+
+                db.query(sqlHadir, (err, hadirResult) => {
+
+                    if (err) {
+                        console.log(err);
+                        return res.send('Database Error');
+                    }
+
+                    const totalPekerja =
+                        totalResult[0].total;
+
+                    const hadir =
+                        hadirResult[0].hadir;
+
+                    const belumHadir =
+                        totalPekerja - hadir;
+
+                    const persentase =
+                        totalPekerja > 0
+                            ? ((hadir / totalPekerja) * 100).toFixed(1)
+                            : 0;
+
+                    res.render(
+                        'admin/dashboard',
+                        {
+                            user: req.session.user,
+                            absensi,
+
+                            totalPekerja,
+                            hadir,
+                            belumHadir,
+                            persentase
+                        }
+                    );
+
+                });
+
+            });
+
+        });
+
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| DATA PEKERJA
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+    '/admin/users',
+    auth,
+    admin,
+    (req, res) => {
+
+        db.query(
+            'SELECT * FROM users ORDER BY id DESC',
+            (err, rows) => {
+
+                if (err) {
+                    console.log(err);
+                    return res.send('Database Error');
+                }
+
+                res.render(
+                    'admin/users',
+                    {
+                        users: rows
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| FORM TAMBAH PEKERJA
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+    '/admin/users/add',
+    auth,
+    admin,
+    (req, res) => {
+
+        res.render('admin/add-user');
+
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| SIMPAN PEKERJA
+|--------------------------------------------------------------------------
+*/
+
+router.post(
+    '/admin/users/add',
+    auth,
+    admin,
+    async (req, res) => {
+
+        try {
+
+            const hash =
+                await bcrypt.hash(
+                    req.body.password,
+                    10
+                );
+
+            db.query(
+                `
+                INSERT INTO users
+                (
+                    nik,
+                    nama,
+                    email,
+                    no_hp,
+                    jabatan,
+                    password,
+                    role
+                )
+                VALUES
+                (
+                    ?,?,?,?,?,?,
+                    'pekerja'
+                )
+                `,
+                [
+                    req.body.nik,
+                    req.body.nama,
+                    req.body.email,
+                    req.body.no_hp,
+                    req.body.jabatan,
+                    hash
+                ],
+                (err) => {
+
+                    if (err) {
+                        console.log(err);
+                        return res.send('Gagal Menyimpan User');
+                    }
+
+                    res.redirect(
+                        '/admin/users'
+                    );
+
+                }
+            );
+
+        } catch (error) {
+
+            console.log(error);
+            res.send('Terjadi Kesalahan');
+
+        }
+
+    }
+);
+
+module.exports = router;

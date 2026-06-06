@@ -1,0 +1,612 @@
+body{
+    margin:0;
+    padding:0;
+    background:#f5f7fb;
+    font-family:'Segoe UI',sans-serif;
+}
+
+.absen-container{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:100vh;
+
+    padding:20px;
+}
+
+.absen-card{
+
+    width:100%;
+    max-width:550px;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.1);
+
+    overflow:hidden;
+}
+
+.absen-header{
+
+    background:#0d6efd;
+
+    color:white;
+
+    text-align:center;
+
+    padding:25px;
+}
+
+.absen-header h2{
+
+    margin:0;
+}
+
+.absen-header p{
+
+    margin-top:10px;
+    font-size:18px;
+}
+
+.datetime-box{
+
+    text-align:center;
+
+    padding:20px;
+}
+
+.date{
+
+    color:#555;
+
+    margin-bottom:10px;
+}
+
+.time{
+
+    font-size:36px;
+
+    font-weight:bold;
+
+    color:#0d6efd;
+}
+
+form{
+
+    padding:20px;
+}
+
+.form-group{
+
+    margin-bottom:15px;
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:5px;
+
+    font-weight:600;
+}
+
+.form-group input,
+.form-group textarea{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:14px;
+}
+
+.btn-clockin{
+
+    width:100%;
+
+    border:none;
+
+    background:#198754;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.btn-clockin:hover{
+
+    background:#157347;
+}
+
+.btn-clockout{
+
+    width:100%;
+
+    border:none;
+
+    background:#dc3545;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.btn-clockout:hover{
+
+    background:#bb2d3b;
+}
+
+hr{
+
+    border:none;
+    border-top:1px solid #eee;
+}
+.stats-container{
+
+    display:grid;
+    gap:20px;
+    margin:20px 0;
+    flex-wrap:wrap;
+}
+
+.stat-card{
+
+    flex:1;
+    min-width:200px;
+
+    background:#ffffff;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    box-shadow:
+    0 3px 10px rgba(0,0,0,.1);
+
+    text-align:center;
+}
+
+.stat-card h3{
+
+    margin:0;
+    color:#555;
+}
+
+.stat-card p{
+
+    margin-top:10px;
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    color:#0d6efd;
+}
+
+.hadir p{
+
+    color:#198754;
+}
+
+.belum p{
+
+    color:#dc3545;
+}
+/* ====================================
+   DASHBOARD ADMIN
+==================================== */
+
+.container{
+    width:95%;
+    margin:auto;
+    padding:20px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#333;
+}
+
+.menu{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    text-decoration:none;
+    padding:10px 15px;
+    border-radius:8px;
+    color:white;
+    font-weight:600;
+}
+
+.btn-primary{
+    background:#0d6efd;
+}
+
+.btn-danger{
+    background:#dc3545;
+}
+
+/* Statistik */
+
+.stats-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.stat-card h3{
+    color:#666;
+    font-size:16px;
+    margin-bottom:10px;
+}
+
+.stat-card p{
+    font-size:35px;
+    font-weight:bold;
+}
+
+.total p{
+    color:#0d6efd;
+}
+
+.hadir p{
+    color:#198754;
+}
+
+.belum p{
+    color:#dc3545;
+}
+
+.persen p{
+    color:#fd7e14;
+}
+
+/* Tabel */
+
+.table-card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.table-title{
+    margin-bottom:15px;
+    color:#333;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#0d6efd;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+table tr:hover{
+    background:#f8f9fa;
+}
+
+.status-in{
+    color:#198754;
+    font-weight:bold;
+}
+
+.status-out{
+    color:#dc3545;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:20px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+    }
+
+    table{
+        font-size:13px;
+    }
+
+}
+/* ====================================
+   LOGIN PAGE
+==================================== */
+
+.login-page{
+
+    background:url('/images/fotopabrik.jpg');
+
+    background-size:cover;
+    background-position:center;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+}
+
+.overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,.45),
+        rgba(0,0,0,.45)
+    );
+}
+
+.login-container{
+
+    position:relative;
+    z-index:10;
+}
+
+.login-card{
+
+    width:420px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.25);
+}
+
+.login-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.logo{
+
+    width:80px;
+    height:80px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:35px;
+
+    margin-bottom:15px;
+}
+
+.login-header h2{
+
+    margin-bottom:10px;
+
+    color:#333;
+}
+
+.login-header p{
+
+    color:#777;
+}
+
+.input-group{
+
+    position:relative;
+
+    margin-bottom:20px;
+}
+
+.input-group{
+
+    display:flex;
+
+    align-items:center;
+
+    background:#eef2ff;
+
+    border:1px solid #dbe1f0;
+
+    border-radius:10px;
+
+    padding:0 15px;
+
+    margin-bottom:20px;
+
+    height:55px;
+}
+
+.input-group i{
+
+    color:#888;
+
+    margin-right:12px;
+
+    font-size:16px;
+
+    min-width:20px;
+}
+
+.input-group input{
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    width:100%;
+
+    font-size:15px;
+
+    height:100%;
+}
+
+.btn-login{
+
+    width:100%;
+
+    border:none;
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.btn-login:hover{
+
+    background:#0b5ed7;
+}
+
+.alert-error{
+
+    background:#ffe5e5;
+
+    color:#dc3545;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    text-align:center;
+}
+.btn-success{
+    background:#198754;
+}
+
+.btn-success:hover{
+    background:#157347;
+}
+
+.btn-danger{
+    background:#dc3545;
+}
+
+.btn-danger:hover{
+    background:#bb2d3b;
+}
+.status-card{
+
+    background:#ffffff;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+    margin-bottom:20px;
+}
+
+.status-card h2{
+
+    margin-bottom:15px;
+}
+
+.status-text{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    color:#0d6efd;
+
+    margin-bottom:15px;
+}
+
+.status-info p{
+
+    margin:8px 0;
+}
+.card{
+    overflow-x:auto;
+}

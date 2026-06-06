@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pekerja</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+            <h1>Dashboard Pekerja</h1>
+            <p>Selamat Datang, <b>{{user.nama}}</b></p>
+        </div>
+
+        <div class="menu">
+            <a href="/pekerja/absensi" class="btn btn-success">
+             Absensi
+             </a>
+             <a href="/pekerja/riwayat" class="btn btn-primary">
+            Riwayat
+              </a>
+             <a href="/logout" class="btn btn-danger">
+             Logout
+    </a>
+
+        </div>
+
+    </div>
+
+    <div class="stats-container">
+
+        <div class="stat-card total">
+            <h3>NIK</h3>
+            <p style="font-size:20px">
+                {{user.nik}}
+            </p>
+        </div>
+
+        <div class="stat-card hadir">
+            <h3>Jabatan</h3>
+            <p style="font-size:20px">
+                {{user.jabatan}}
+            </p>
+        </div>
+
+        <div class="stat-card">
+             <h3>Status Absensi</h3>
+             <p style="font-size:18px">
+              {{status}}
+        </p>
+        </div>
+
+    </div>
+    <div class="status-card">
+
+    <h2>Status Absensi Hari Ini</h2>
+
+    <div class="status-text">
+
+        {{status}}
+
+    </div>
+
+    <div class="status-info">
+
+        <p>
+            <strong>Jam Masuk :</strong>
+            {{jamMasuk}}
+        </p>
+
+        <p>
+            <strong>Jam Keluar :</strong>
+            {{jamKeluar}}
+        </p>
+
+    </div>
+
+</div>
+
+    <div class="table-card">
+
+        <h2 class="table-title">
+            Informasi
+        </h2>
+
+        <table>
+
+            <tr>
+                <td width="200">
+                    Nama
+                </td>
+                <td>
+                    {{user.nama}}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Email
+                </td>
+                <td>
+                    {{user.email}}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    No HP
+                </td>
+                <td>
+                    {{user.no_hp}}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Jabatan
+                </td>
+                <td>
+                    {{user.jabatan}}
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

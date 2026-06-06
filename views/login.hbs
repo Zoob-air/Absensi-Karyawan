@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Absensi Pekerja</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body class="login-page">
+
+<div class="overlay"></div>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="login-header">
+
+            <div class="logo">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+
+            <h2>ABSENSI PEKERJA</h2>
+
+            <p>Silakan login untuk melanjutkan</p>
+
+        </div>
+
+        {{#if error}}
+
+        <div class="alert-error">
+            {{error}}
+        </div>
+
+        {{/if}}
+
+        <form method="POST" action="/login">
+
+            <div class="input-group">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Masukkan Email"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Masukkan Password"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="btn-login">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                Login
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

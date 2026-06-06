@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Absensi</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        .container{
+            width:95%;
+            margin:auto;
+            padding:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+        tbody tr:hover{
+            background:#f8f9fa;
+        }
+        th{
+            background:#0d6efd;
+            color:white;
+            padding:12px;
+        }
+
+        td{
+            padding:12px;
+            border:1px solid #ddd;
+        }
+
+        .btn{
+            padding:10px 15px;
+            text-decoration:none;
+            border-radius:8px;
+            color:white;
+        }
+
+        .btn-primary{
+            background:#0d6efd;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
+            overflow-x:auto;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Riwayat Absensi</h2>
+
+    <p>
+        {{user.nama}}
+    </p>
+<form method="GET" action="/pekerja/riwayat">
+
+        <input
+            type="month"
+            name="bulan"
+            value="{{bulan}}"
+        >
+
+        <button type="submit" class="btn btn-primary">
+            Filter
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/pekerja/dashboard" class="btn btn-primary">
+        Kembali
+    </a>
+
+    <br><br>
+
+
+    <div class="card">
+
+        <table>
+
+            <thead>
+
+               <tr>
+                    <th>Tanggal</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Keluar</th>
+                    <th>Lokasi Masuk</th>
+                    <th>Lokasi Keluar</th>
+                    <th>Keterangan Masuk</th>
+                    <th>Keterangan Keluar</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {{#if data.length}}
+
+                {{#each data}}
+
+                <tr>
+
+                    <td>{{this.tanggal}}</td>
+
+                        <td>{{this.jam_masuk}}</td>
+
+                        <td>{{this.jam_keluar}}</td>
+
+                        <td>
+                            {{this.latitude_masuk}},
+                            {{this.longitude_masuk}}
+                        </td>
+
+                        <td>
+                            {{this.latitude_keluar}},
+                            {{this.longitude_keluar}}
+                        </td>
+
+                        <td>{{this.keterangan_masuk}}</td>
+
+                        <td>{{this.keterangan_keluar}}</td>
+
+                </tr>
+
+                {{/each}}
+
+            {{else}}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Belum ada riwayat absensi
+
+                    </td>
+
+                </tr>
+
+            {{/if}}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
