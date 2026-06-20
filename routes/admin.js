@@ -359,5 +359,44 @@ router.get(
 
     }
 );
+/*
+|--------------------------------------------------------------------------
+| HAPUS PEKERJA
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+    '/admin/users/delete/:id',
+    auth,
+    admin,
+    (req,res)=>{
+
+        const userId =
+        req.params.id;
+
+        db.query(
+            `
+            DELETE FROM users
+            WHERE id = ?
+            `,
+            [userId],
+            (err)=>{
+
+                if(err){
+                    console.log(err);
+                    return res.send(
+                        'Gagal menghapus pekerja'
+                    );
+                }
+
+                res.redirect(
+                    '/admin/users'
+                );
+
+            }
+        );
+
+    }
+);
 
 module.exports = router;
