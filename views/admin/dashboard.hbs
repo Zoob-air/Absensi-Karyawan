@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>📊 Dashboard Admin</h2>
+
+    <div class="menu">
+
+        <a href="/admin/users">
+            👥 Data Pekerja
+        </a>
+
+        <a href="/admin/riwayat">
+            🕒 Riwayat Absensi
+        </a>
+
+        <a href="/logout">
+            🚪 Logout
+        </a>
+        <a href="/reset-password">
+            🔐 Reset Password
+        </a>
+
+    </div>
+
+    <h3>📌 Absensi Hari Ini</h3>
+
+
+<div class="stat-card">
+    <h3>Persentase Hadir</h3>
+    <p>{{persentase}}%</p>
+</div>
+
+<div class="stats-container">
+
+    <div class="stat-card">
+        <h3>Total Pekerja</h3>
+        <p>{{totalPekerja}}</p>
+    </div>
+
+    <div class="stat-card hadir">
+        <h3>Sudah Absen</h3>
+        <p>{{hadir}}</p>
+    </div>
+
+    <div class="stat-card belum">
+        <h3>Belum Absen</h3>
+        <p>{{belumHadir}}</p>
+    </div>
+
+
+    <div class="stat-card">
+        <h3>Sudah Clock Out</h3>
+        <p>{{sudahClockOut}}</p>
+    </div>
+    
+    <div class="stat-card belum">
+        <h3>Belum Clock Out</h3>
+        <p>{{belumClockOut}}</p>
+    </div>
+</div>
+
+</div>
+
+    <div class="table-wrapper">
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Nama</th>
+                <th>Jabatan</th>
+                <th>Tanggal</th>
+                <th>Jam Masuk</th>
+                <th>Jam Keluar</th>
+                <th>Lokasi Masuk</th>
+                <th>Lokasi Keluar</th>
+                <th>Keterangan Masuk</th>
+                <th>Keterangan Keluar</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {{#if absensi.length}}
+
+            {{#each absensi}}
+
+            <tr>
+
+                <td>{{this.nama}}</td>
+
+                <td>{{this.jabatan}}</td>
+
+                <td>{{this.tanggal}}</td>
+
+                <td>{{this.jam_masuk}}</td>
+
+                <td>{{this.jam_keluar}}</td>
+
+                <td>{{this.lokasi_masuk}}</td>
+                <td>{{this.lokasi_keluar}}</td>
+
+                <td>{{this.keterangan_masuk}}</td>
+
+                <td>{{this.keterangan_keluar}}</td>
+
+            </tr>
+
+            {{/each}}
+
+        {{else}}
+
+            <tr>
+                <td colspan="9">
+                    Belum ada absensi hari ini
+                </td>
+            </tr>
+
+        {{/if}}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Absensi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div>
+            <h2>🕒 Riwayat Absensi</h2>
+            <p>{{user.nama}}</p>
+        </div>
+        <a href="/pekerja/dashboard" class="btn btn-secondary">← Kembali</a>
+    </div>
+
+    <form method="GET" action="/pekerja/riwayat" class="filter-form">
+        <input type="month" name="bulan" value="{{bulan}}">
+        <button type="submit" class="btn btn-primary">🔎 Filter</button>
+        <a href="/pekerja/riwayat" class="btn btn-secondary">Reset</a>
+    </form>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Keluar</th>
+                    <th>Lokasi Masuk</th>
+                    <th>Lokasi Keluar</th>
+                    <th>Keterangan Masuk</th>
+                    <th>Keterangan Keluar</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#if data.length}}
+                {{#each data}}
+                <tr>
+                    <td class="text-center">{{this.tanggal}}</td>
+                    <td class="text-center">{{this.jam_masuk}}</td>
+                    <td class="text-center">{{this.jam_keluar}}</td>
+                    <td>{{this.lokasi_masuk}}</td>
+                    <td>{{this.lokasi_keluar}}</td>
+                    <td>{{this.keterangan_masuk}}</td>
+                    <td>{{this.keterangan_keluar}}</td>
+                </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <td colspan="7" class="empty-row">Belum ada riwayat absensi</td>
+                </tr>
+            {{/if}}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
