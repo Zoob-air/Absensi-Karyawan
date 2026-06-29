@@ -10,5 +10,11 @@ router.put('/api/admin/users/:id', apiAuth, apiAdmin, apiAdminController.updateU
 router.delete('/api/admin/users/:id', apiAuth, apiAdmin, apiAdminController.deleteUser);
 router.post('/api/admin/users/:id/reset-password', apiAuth, apiAdmin, apiAdminController.resetPassword);
 router.get('/api/admin/riwayat', apiAuth, apiAdmin, apiAdminController.riwayat);
+router.get(
+    "/api/admin/riwayat/:id",
+    apiAuth,
+    apiAdmin,
+    apiAdminController.detailRiwayat
+);
 
 module.exports = router;

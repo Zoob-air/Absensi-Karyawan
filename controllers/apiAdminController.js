@@ -93,25 +93,75 @@ async function riwayat(req, res) {
             nik: row.nik,
             nama: row.nama,
             jabatan: row.jabatan,
-            tanggal: moment(row.tanggal).format('DD-MM-YYYY'),
-            jam_masuk: row.jam_masuk || '-',
-            jam_keluar: row.jam_keluar || '-',
-            lokasi_masuk: {
-                latitude: row.latitude_masuk,
-                longitude: row.longitude_masuk
-            },
-            lokasi_keluar: {
-                latitude: row.latitude_keluar,
-                longitude: row.longitude_keluar
-            },
-            keterangan_masuk: row.keterangan_masuk || '-',
-            keterangan_keluar: row.keterangan_keluar || '-'
+            tanggal: moment(row.tanggal).format("DD-MM-YYYY"),
+            jam_masuk: row.jam_masuk || "-",
+            jam_keluar: row.jam_keluar || "-",
+        
+            latitude_masuk: row.latitude_masuk,
+            longitude_masuk: row.longitude_masuk,
+            lokasi_masuk: row.lokasi_masuk || "-",
+        
+            latitude_keluar: row.latitude_keluar,
+            longitude_keluar: row.longitude_keluar,
+            lokasi_keluar: row.lokasi_keluar || "-",
+        
+            keterangan_masuk: row.keterangan_masuk || "-",
+            keterangan_keluar: row.keterangan_keluar || "-"
         }));
 
         res.json({ success: true, total: data.length, data });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: 'Database error' });
+    }
+}
+async function detailRiwayat(req, res) {
+    try {
+        const row = await attendanceService.getAdminRiwayatById(
+            req.params.id
+        );
+
+        if (!row) {
+            return res.status(404).json({
+                success: false,
+                message: "Data riwayat tidak ditemukan"
+            });
+        }
+
+        const data = {
+            id: row.id,
+            nik: row.nik,
+            nama: row.nama,
+            jabatan: row.jabatan,
+
+            tanggal: moment(row.tanggal).format("DD-MM-YYYY"),
+
+            jam_masuk: row.jam_masuk || "-",
+            jam_keluar: row.jam_keluar || "-",
+
+            latitude_masuk: row.latitude_masuk,
+            longitude_masuk: row.longitude_masuk,
+            lokasi_masuk: row.lokasi_masuk || "-",
+
+            latitude_keluar: row.latitude_keluar,
+            longitude_keluar: row.longitude_keluar,
+            lokasi_keluar: row.lokasi_keluar || "-",
+
+            keterangan_masuk: row.keterangan_masuk || "-",
+            keterangan_keluar: row.keterangan_keluar || "-"
+        };
+
+        res.json({
+            success: true,
+            data
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Database error"
+        });
     }
 }
 
@@ -122,5 +172,6 @@ module.exports = {
     updateUser,
     deleteUser,
     resetPassword,
-    riwayat
+    riwayat,
+    detailRiwayat
 };

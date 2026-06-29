@@ -122,25 +122,41 @@ async function clockOut(req, res) {
 
 async function riwayat(req, res) {
     try {
-        const rows = await attendanceService.getRiwayatByUser(req.user.id, req.query.bulan);
+        const rows = await attendanceService.getRiwayatByUser(
+            req.user.id,
+            req.query.bulan
+        );
 
         const data = rows.map(row => ({
-            id: row.id,
-            tanggal: moment(row.tanggal).format('DD-MM-YYYY'),
-            jam_masuk: row.jam_masuk || '-',
-            jam_keluar: row.jam_keluar || '-',
-            latitude_masuk: row.latitude_masuk,
-            longitude_masuk: row.longitude_masuk,
-            latitude_keluar: row.latitude_keluar,
-            longitude_keluar: row.longitude_keluar,
-            keterangan_masuk: row.keterangan_masuk || '-',
-            keterangan_keluar: row.keterangan_keluar || '-'
-        }));
+        id: row.id,
+        tanggal: moment(row.tanggal).format('DD-MM-YYYY'),
+        jam_masuk: row.jam_masuk || '-',
+        jam_keluar: row.jam_keluar || '-',
 
-        res.json({ success: true, total: data.length, data });
+        latitude_masuk: row.latitude_masuk,
+        longitude_masuk: row.longitude_masuk,
+        lokasi_masuk: row.lokasi_masuk || '-',
+
+        latitude_keluar: row.latitude_keluar,
+        longitude_keluar: row.longitude_keluar,
+        lokasi_keluar: row.lokasi_keluar || '-',
+
+        keterangan_masuk: row.keterangan_masuk || '-',
+        keterangan_keluar: row.keterangan_keluar || '-'
+    }));
+
+        res.json({
+            success: true,
+            total: data.length,
+            data
+        });
+
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: 'Database error' });
+        res.status(500).json({
+            success: false,
+            message: 'Database error'
+        });
     }
 }
 

@@ -1,4 +1,5 @@
 const db = require('../config/db').promise();
+const { getAddress } = require('./geocodeService');
 
 async function getTodayByUser(userId) {
     const [rows] = await db.query(`
@@ -12,14 +13,37 @@ async function getTodayByUser(userId) {
 }
 
 async function clockIn(userId, data) {
+    const lokasiMasuk = await getAddress(
+        data.latitude,
+        data.longitude
+    );
+
     const [result] = await db.query(`
         INSERT INTO absensi
-        (user_id, tanggal, jam_masuk, latitude_masuk, longitude_masuk, keterangan_masuk)
-        VALUES (?, CURDATE(), CURTIME(), ?, ?, ?)
+        (
+            user_id,
+            tanggal,
+            jam_masuk,
+            latitude_masuk,
+            longitude_masuk,
+            lokasi_masuk,
+            keterangan_masuk
+        )
+        VALUES
+        (
+            ?,
+            CURDATE(),
+            CURTIME(),
+            ?,
+            ?,
+            ?,
+            ?
+        )
     `, [
         userId,
         data.latitude,
         data.longitude,
+        lokasiMasuk,
         data.keterangan
     ]);
 
@@ -27,16 +51,24 @@ async function clockIn(userId, data) {
 }
 
 async function clockOut(absensiId, data) {
+    const lokasiKeluar = await getAddress(
+        data.latitude,
+        data.longitude
+    );
+
     const [result] = await db.query(`
         UPDATE absensi
-        SET jam_keluar = CURTIME(),
+        SET
+            jam_keluar = CURTIME(),
             latitude_keluar = ?,
             longitude_keluar = ?,
+            lokasi_keluar = ?,
             keterangan_keluar = ?
         WHERE id = ?
     `, [
         data.latitude,
         data.longitude,
+        lokasiKeluar,
         data.keterangan || '',
         absensiId
     ]);
@@ -45,15 +77,24 @@ async function clockOut(absensiId, data) {
 }
 
 async function getRiwayatByUser(userId, bulan) {
-    let sql = `SELECT * FROM absensi WHERE user_id = ?`;
+    let sql = `
+        SELECT *
+        FROM absensi
+        WHERE user_id = ?
+    `;
+
     const params = [userId];
 
     if (bulan) {
-        sql += ` AND DATE_FORMAT(tanggal,'%Y-%m') = ?`;
+        sql += `
+            AND DATE_FORMAT(tanggal,'%Y-%m') = ?
+        `;
         params.push(bulan);
     }
 
-    sql += ` ORDER BY tanggal DESC`;
+    sql += `
+        ORDER BY tanggal DESC
+    `;
 
     const [rows] = await db.query(sql, params);
     return rows;
@@ -61,7 +102,11 @@ async function getRiwayatByUser(userId, bulan) {
 
 async function getAdminRiwayat(filter = {}) {
     let sql = `
-        SELECT a.*, u.nik, u.nama, u.jabatan
+        SELECT
+            a.*,
+            u.nik,
+            u.nama,
+            u.jabatan
         FROM absensi a
         JOIN users u ON a.user_id = u.id
         WHERE 1=1
@@ -70,21 +115,29 @@ async function getAdminRiwayat(filter = {}) {
     const params = [];
 
     if (filter.bulan) {
-        sql += ` AND DATE_FORMAT(a.tanggal,'%Y-%m') = ?`;
+        sql += `
+            AND DATE_FORMAT(a.tanggal,'%Y-%m') = ?
+        `;
         params.push(filter.bulan);
     }
 
     if (filter.nama) {
-        sql += ` AND u.nama LIKE ?`;
+        sql += `
+            AND u.nama LIKE ?
+        `;
         params.push(`%${filter.nama}%`);
     }
 
     if (filter.jabatan) {
-        sql += ` AND u.jabatan LIKE ?`;
+        sql += `
+            AND u.jabatan LIKE ?
+        `;
         params.push(`%${filter.jabatan}%`);
     }
 
-    sql += ` ORDER BY a.tanggal DESC`;
+    sql += `
+        ORDER BY a.tanggal DESC
+    `;
 
     const [rows] = await db.query(sql, params);
     return rows;
@@ -92,7 +145,10 @@ async function getAdminRiwayat(filter = {}) {
 
 async function getTodayAdminAbsensi() {
     const [rows] = await db.query(`
-        SELECT a.*, u.nama, u.jabatan
+        SELECT
+            a.*,
+            u.nama,
+            u.jabatan
         FROM absensi a
         JOIN users u ON a.user_id = u.id
         WHERE a.tanggal = CURDATE()
@@ -120,8 +176,28 @@ async function getAdminStats() {
         belumHadir: totalPekerja - hadir,
         sudahClockOut,
         belumClockOut: hadir - sudahClockOut,
-        persentase: totalPekerja > 0 ? ((hadir / totalPekerja) * 100).toFixed(1) : 0
+        persentase: totalPekerja > 0
+            ? ((hadir / totalPekerja) * 100).toFixed(1)
+            : 0
     };
+}
+
+async function getAdminRiwayatById(id) {
+    const [rows] = await db.query(
+        `
+        SELECT
+            a.*,
+            u.nik,
+            u.nama,
+            u.jabatan
+        FROM absensi a
+        JOIN users u ON a.user_id = u.id
+        WHERE a.id = ?
+        `,
+        [id]
+    );
+
+    return rows[0] || null;
 }
 
 module.exports = {
@@ -131,5 +207,6 @@ module.exports = {
     getRiwayatByUser,
     getAdminRiwayat,
     getTodayAdminAbsensi,
-    getAdminStats
+    getAdminStats,
+    getAdminRiwayatById
 };
