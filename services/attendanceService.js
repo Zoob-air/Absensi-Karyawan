@@ -27,6 +27,7 @@ async function clockIn(userId, data) {
             latitude_masuk,
             longitude_masuk,
             lokasi_masuk,
+            foto_masuk,
             keterangan_masuk
         )
         VALUES
@@ -37,6 +38,7 @@ async function clockIn(userId, data) {
             ?,
             ?,
             ?,
+            ?,
             ?
         )
     `, [
@@ -44,6 +46,7 @@ async function clockIn(userId, data) {
         data.latitude,
         data.longitude,
         lokasiMasuk,
+        data.foto_masuk,
         data.keterangan
     ]);
 
@@ -63,12 +66,14 @@ async function clockOut(absensiId, data) {
             latitude_keluar = ?,
             longitude_keluar = ?,
             lokasi_keluar = ?,
+            foto_keluar = ?,
             keterangan_keluar = ?
         WHERE id = ?
     `, [
         data.latitude,
         data.longitude,
         lokasiKeluar,
+        data.foto_keluar,
         data.keterangan || '',
         absensiId
     ]);

@@ -69,7 +69,14 @@ async function clockIn(req, res) {
             });
         }
 
-        await attendanceService.clockIn(req.user.id, req.body);
+        const fotoMasuk = req.file
+            ? `/uploads/absensi/${req.file.filename}`
+            : null;
+
+        await attendanceService.clockIn(req.user.id, {
+            ...req.body,
+            foto_masuk: fotoMasuk
+        });
 
         res.json({
             success: true,
@@ -108,7 +115,14 @@ async function clockOut(req, res) {
             });
         }
 
-        await attendanceService.clockOut(todayData.id, req.body);
+        const fotoKeluar = req.file
+            ? `/uploads/absensi/${req.file.filename}`
+            : null;
+
+        await attendanceService.clockOut(todayData.id, {
+            ...req.body,
+            foto_keluar: fotoKeluar
+        });
 
         res.json({
             success: true,
@@ -136,10 +150,12 @@ async function riwayat(req, res) {
         latitude_masuk: row.latitude_masuk,
         longitude_masuk: row.longitude_masuk,
         lokasi_masuk: row.lokasi_masuk || '-',
-
+        foto_masuk: row.foto_masuk,
+        
         latitude_keluar: row.latitude_keluar,
         longitude_keluar: row.longitude_keluar,
         lokasi_keluar: row.lokasi_keluar || '-',
+        foto_keluar: row.foto_keluar,
 
         keterangan_masuk: row.keterangan_masuk || '-',
         keterangan_keluar: row.keterangan_keluar || '-'

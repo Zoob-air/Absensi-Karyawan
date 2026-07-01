@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret_absensi',
@@ -31,6 +32,7 @@ app.use(require('./routes/pekerja'));
 app.use(require('./routes/apiAuth'));
 app.use(require('./routes/apiPekerja'));
 app.use(require('./routes/apiAdmin'));
+app.use(require("./routes/apiProfile"));
 
 // 404
 app.use((req, res) => {
