@@ -33,6 +33,9 @@ app.use(require('./routes/apiAuth'));
 app.use(require('./routes/apiPekerja'));
 app.use(require('./routes/apiAdmin'));
 app.use(require("./routes/apiProfile"));
+app.use(require('./routes/apiHoliday'));
+app.use(require('./routes/apiRekap'));
+app.use(require('./routes/apiSaw'));
 
 // 404
 app.use((req, res) => {
