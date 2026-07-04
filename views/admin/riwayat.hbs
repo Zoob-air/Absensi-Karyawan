@@ -59,6 +59,16 @@ td{
 .filter button{
     padding:10px 15px;
 }
+.foto-absen{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
+.text-center{
+    text-align:center;
+}
 
 </style>
 
@@ -152,10 +162,12 @@ td{
 <th>Jabatan</th>
 <th>Tanggal</th>
 <th>Jam Masuk</th>
-<th>Jam Keluar</th>
 <th>Lokasi Masuk</th>
-<th>Lokasi Keluar</th>
+<th>Foto Masuk</th>
 <th>Keterangan Masuk</th>
+<th>Jam Keluar</th>
+<th>Lokasi Keluar</th>
+<th>Foto Keluar</th>
 <th>Keterangan Keluar</th>
 
 </tr>
@@ -175,10 +187,31 @@ td{
 <td>{{this.jabatan}}</td>
 <td>{{this.tanggal}}</td>
 <td>{{this.jam_masuk}}</td>
-<td>{{this.jam_keluar}}</td>
 <td>{{this.lokasi_masuk}}</td>
-<td>{{this.lokasi_keluar}}</td>
+<td class="text-center">
+        {{#if this.foto_masuk}}
+            <img 
+                src="{{this.foto_masuk}}" 
+                class="foto-absen" 
+                alt="Foto Masuk"
+            >
+        {{else}}
+            -
+        {{/if}}
 <td>{{this.keterangan_masuk}}</td>
+<td>{{this.jam_keluar}}</td>
+<td>{{this.lokasi_keluar}}</td>
+<td class="text-center">
+        {{#if this.foto_keluar}}
+            <img 
+                src="{{this.foto_keluar}}" 
+                class="foto-absen" 
+                alt="Foto Keluar"
+            >
+        {{else}}
+            -
+        {{/if}}
+ </td>
 <td>{{this.keterangan_keluar}}</td>
 
 </tr>
@@ -189,7 +222,7 @@ td{
 
 <tr>
 
-<td colspan="8">
+<td colspan="12">
 Belum ada data absensi
 </td>
 

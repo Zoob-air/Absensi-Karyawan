@@ -100,11 +100,13 @@ async function riwayat(req, res) {
             latitude_masuk: row.latitude_masuk,
             longitude_masuk: row.longitude_masuk,
             lokasi_masuk: row.lokasi_masuk || "-",
+            foto_masuk: row.foto_masuk || null,
         
             latitude_keluar: row.latitude_keluar,
             longitude_keluar: row.longitude_keluar,
             lokasi_keluar: row.lokasi_keluar || "-",
-        
+            foto_keluar: row.foto_keluar || null,
+
             keterangan_masuk: row.keterangan_masuk || "-",
             keterangan_keluar: row.keterangan_keluar || "-"
         }));
