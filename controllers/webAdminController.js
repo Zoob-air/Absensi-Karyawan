@@ -139,6 +139,8 @@ async function riwayat(req, res) {
             item.jam_keluar = item.jam_keluar || '-';
             item.keterangan_masuk = item.keterangan_masuk || '-';
             item.keterangan_keluar = item.keterangan_keluar || '-';
+            item.foto_masuk = item.foto_masuk || null;
+            item.foto_keluar = item.foto_keluar || null;
         }
 
         res.render('admin/riwayat', {
